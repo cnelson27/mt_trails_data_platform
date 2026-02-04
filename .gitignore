@@ -47,6 +47,7 @@ data/processed/*
 *.parquet
 *.db
 *.sqlite3
+data_lake/*
 
 # Logs
 logs/
