@@ -27,10 +27,10 @@
 ### Phase 1: Ingestion Framework (Current)
 *   **Goal**: Dockerized API ingestion to S3.
 *   **Status**:
-    *   [x] `ingest_weather.py`: Fetches Open-Meteo data for Billings.
+    *   [x] `ingest_weather.py`: Fetches Open-Meteo data for Billings + S3 logic.
     *   [x] `Dockerfile`: Multi-stage build (Python 3.11).
     *   [x] `docker-compose`: Local execution mounting `data_lake/`.
-    *   [ ] **Next**: Implement S3 upload logic (using `boto3`).
+    *   [ ] **Next**: Transition to **Cloud**: Set up AWS S3 bucket and credentials.
 
 ### Phase 2: Orchestration
 *   **Goal**: Reliability and automation.
