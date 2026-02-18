@@ -32,32 +32,35 @@
     *   [x] `docker-compose`: Local execution mounting `data_lake/`.
     *   [ ] **Next**: Transition to **Cloud**: Set up AWS S3 bucket and credentials.
 
-### Phase 2: Orchestration
+### Phase 2: Orchestration (Current)
 *   **Goal**: Reliability and automation.
-*   **Plan**: Wrap ingestion in a Prefect Flow (`weather_flow.py`).
+*   **Status**:
+    *   [x] Refactored ingestion into Prefect Tasks & Flows (`weather_flow.py`).
+    *   [x] Dockerized Prefect environment (ephemeral mode verification).
+    *   [ ] **Next**: Set up long-lived Prefect server or Cloud login for observability.
 
 ### Phase 3: Data Warehouse (The "Banking" Layer)
 *   **Goal**: Structured modeling.
 *   **Plan**: Ingest JSON to Databricks Bronze -> dbt to Silver/Gold.
 
 ## 📝 Developer Notes
-*   **Docker Build**: Run from root: `docker build -t mt-trails -f docker/Dockerfile .`
-*   **Docker Run**: `docker-compose -f docker/docker-compose.yml up`
+*   **Docker Build**: Run from root: `docker-compose -f docker/docker-compose.yml build`
+*   **Docker Run (Orchestration)**: `docker-compose -f docker/docker-compose.yml up`
 *   **Governance**: Always ensure we have `schema.yml` for every model (Auditability).
 
 ---
-## 🛑 Checkpoint: 2026-02-03
-**State**: Docker Image Successfully Built.
+## 🛑 Checkpoint: 2026-02-17
+**State**: Ingestion Framework & Orchestration Setup Complete.
 **Accomplishments**:
-1.  Created generic `ingest_weather.py` for Billings data.
-2.  Restructured project to separate `ingestion/` and `docker/` logic.
-3.  **Learned**: "Build Context". Use `docker build -f docker/Dockerfile .` (run from root) to ensure the Dockerfile can see files in `ingestion/`.
-4.  **Issue Resolved**: Added Docker to Windows PATH.
+1.  **S3 Logic**: Implemented `boto3` logic in `ingest_weather.py` with a `RUN_MODE=local` bypass.
+2.  **Environment Restoration**: Rebuilt `docker-compose.yml` to support both raw ingestion and orchestrated flows.
+3.  **Phase 2 Start**: Successfully refactored and ran the weather ingestion as a Prefect Flow inside Docker.
+4.  **Verification**: Confirmed local simulation of the data lake works via Docker volumes.
 
 **Next Session Start-Up**:
-1.  Run the container to verify it produces data:
+1.  **Run the Flow**: Verify the pipe is still hot:
     ```bash
-    docker-compose -f docker/docker-compose.yml up --build
+    docker-compose -f docker/docker-compose.yml up
     ```
-2.  Check `data_lake/raw_weather/` for the new `.json` file.
-3.  Transition to **Cloud**: Set up AWS S3 bucket and credentials.
+2.  **Cloud Transition**: If ready, set up AWS S3 bucket and update `.env` with credentials.
+3.  **Orchestration Maturity**: Set up a Prefect schedule or connect to Prefect Cloud for persistent logging.
