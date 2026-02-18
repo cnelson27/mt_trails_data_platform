@@ -1,16 +1,18 @@
 version: '3.8'
 
 services:
-  weather_ingestion:
+  weather_orchestration:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     volumes:
       - ../data_lake:/app/data_lake
+      - ../orchestration:/app/orchestration
     environment:
       - AWS_ACCESS_KEY_ID=mock_key
       - AWS_SECRET_ACCESS_KEY=mock_secret
       - AWS_DEFAULT_REGION=us-east-1
       - S3_BUCKET_NAME=mt-trails-data-lake
       - RUN_MODE=local
-    container_name: mt-trails-ingestion
+    container_name: mt-trails-orchestration
+    command: python orchestration/weather_flow.py
